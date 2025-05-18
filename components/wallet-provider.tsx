@@ -93,7 +93,7 @@ function WalletStateController({ children }: { children: ReactNode }) {
 	} = useAccount();
 	const { data: wagmiBalanceData } = useBalance({ address: wagmiAddress });
 	const { disconnect: wagmiDisconnect } = useDisconnect();
-	const { signMessage } = useSignMessage();
+	const { signMessageAsync } = useSignMessage();
 
 	const address = wagmiAddress;
 	const isConnected = wagmiIsConnected;
@@ -120,7 +120,7 @@ function WalletStateController({ children }: { children: ReactNode }) {
 			);
 
 			const { message } = response.data;
-			const signature = signMessage({ message });
+			const signature = await signMessageAsync({ message });
 
 			const signatureResponse = await axios.post(
 				`${baseUrl}/auth/verify`,
