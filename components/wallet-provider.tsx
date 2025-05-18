@@ -26,7 +26,7 @@ const config = defaultConfig({
 	appName: "Ding Dong Loans", // You can customize your app name
 	walletConnectProjectId:
 		process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || "",
-	xellarAppId: NEXT_PUBLIC_XELLAR_APP_ID || "",
+	xellarAppId: process.env.NEXT_PUBLIC_XELLAR_APP_ID || "",
 	xellarEnv: "production", // Or "production"
 	ssr: true, // Required for Next.js App Router
 
