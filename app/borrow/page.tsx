@@ -121,7 +121,7 @@ export default function BorrowPage() {
       <Tabs defaultValue="crypto" className="space-y-8">
         <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-2 bg-slate-800/50">
           <TabsTrigger value="crypto">Borrow Crypto</TabsTrigger>
-          <TabsTrigger value="proposals">Business Proposals</TabsTrigger>
+          <TabsTrigger value="proposals">My Proposals</TabsTrigger>
         </TabsList>
 
         <TabsContent value="crypto" className="space-y-6">
