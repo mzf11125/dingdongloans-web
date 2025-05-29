@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import {
@@ -33,7 +33,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { businessProposals } from "@/data/business-proposals"
+import { fetchBusinessProposals } from "@/data/business-proposals"
+import type { BusinessProposal } from "@/types/business-proposal"
 import CreateProposalForm from "./create-proposal-form"
 import { pools } from "@/data/mock-data"
 import BorrowCryptoForm from "./borrow-crypto-form"
@@ -43,19 +44,36 @@ export default function BorrowPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [isBorrowDialogOpen, setIsBorrowDialogOpen] = useState(false)
+  const [proposals, setProposals] = useState<BusinessProposal[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadProposals = async () => {
+      try {
+        const data = await fetchBusinessProposals()
+        setProposals(data)
+      } catch (error) {
+        console.error("Error loading proposals:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadProposals()
+  }, [])
 
   // Filter proposals to only show those from the current user
   // In a real app, this would come from an API call
-  const userProposals = businessProposals.filter(
-    (proposal) => isConnected && address && proposal.proposerWallet === address,
+  const userProposals = proposals.filter(
+    (proposal) => isConnected && address && proposal.proposer_wallet === address,
   )
 
   // Filter proposals based on search term
   const filteredProposals = userProposals.filter(
     (proposal) =>
-      proposal.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      proposal.shortDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      proposal.acceptedToken.toLowerCase().includes(searchTerm.toLowerCase()),
+      proposal.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      proposal.short_description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      proposal.accepted_token.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
   if (!isConnected) {
@@ -68,6 +86,17 @@ export default function BorrowPage() {
         <Button onClick={connect} className="web3-button">
           Connect Wallet
         </Button>
+      </div>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-16 text-center">
+        <h1 className="text-3xl font-bold mb-6 gradient-text">Loading...</h1>
+        <p className="text-slate-400 mb-8 max-w-md mx-auto">
+          Fetching your business proposals...
+        </p>
       </div>
     )
   }
@@ -218,7 +247,9 @@ export default function BorrowPage() {
                 <CardDescription>Available assets for borrowing with current rates and liquidity</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {pools[0].assets.map((asset) => (
+                {pools[0].assets
+                  .filter(asset => asset.symbol === "IDRX") // Only show IDRX for borrowing
+                  .map((asset) => (
                   <div key={asset.symbol} className="flex justify-between items-center p-3 bg-slate-800 rounded-lg">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center">
@@ -235,6 +266,11 @@ export default function BorrowPage() {
                     </div>
                   </div>
                 ))}
+                <div className="pt-2">
+                  <div className="text-sm text-slate-400 p-2 bg-slate-800/50 rounded-lg">
+                    📢 Currently, only IDRX is available for borrowing. Other assets can be used as collateral.
+                  </div>
+                </div>
                 <div className="pt-2">
                   <Link href="/markets" className="text-sm text-blue-400 hover:text-blue-300 flex items-center">
                     View all markets <ChevronRight className="ml-1 h-4 w-4" />
@@ -305,42 +341,36 @@ export default function BorrowPage() {
                               {proposal.logo ? (
                                 <Image
                                   src={proposal.logo || "/placeholder.svg"}
-                                  alt={proposal.companyName}
+                                  alt={proposal.company_name}
                                   width={48}
                                   height={48}
                                 />
                               ) : (
-                                <div className="text-2xl font-bold">{proposal.companyName.charAt(0)}</div>
+                                <div className="text-2xl font-bold">{proposal.company_name.charAt(0)}</div>
                               )}
                             </div>
                             <div>
-                              <CardTitle className="text-lg gradient-text">{proposal.companyName}</CardTitle>
+                              <CardTitle className="text-lg gradient-text">{proposal.company_name}</CardTitle>
                               <CardDescription className="flex items-center gap-1">
-                                <Wallet className="h-3 w-3" /> Requesting {proposal.acceptedToken}
+                                <Wallet className="h-3 w-3" /> Requesting {proposal.accepted_token}
                               </CardDescription>
                             </div>
                           </div>
                         </CardHeader>
                         <CardContent className="pb-2">
-                          <p className="text-sm text-slate-300 mb-4">{proposal.shortDescription}</p>
-                          <div className="grid grid-cols-3 gap-2 mb-4">
+                          <p className="text-sm text-slate-300 mb-4">{proposal.short_description}</p>
+                          <div className="grid grid-cols-2 gap-2 mb-4">
                             <div className="text-center">
                               <div className="flex items-center justify-center gap-1 text-xs text-slate-400 mb-1">
                                 <TrendingUp className="h-3 w-3" /> Return
                               </div>
-                              <p className="text-sm font-medium gradient-text">{proposal.expectedReturn}</p>
-                            </div>
-                            <div className="text-center">
-                              <div className="flex items-center justify-center gap-1 text-xs text-slate-400 mb-1">
-                                <Calendar className="h-3 w-3" /> Duration
-                              </div>
-                              <p className="text-sm font-medium">{proposal.duration}</p>
+                              <p className="text-sm font-medium gradient-text">{proposal.expected_return}</p>
                             </div>
                             <div className="text-center">
                               <div className="flex items-center justify-center gap-1 text-xs text-slate-400 mb-1">
                                 <Wallet className="h-3 w-3" /> Target
                               </div>
-                              <p className="text-sm font-medium">{proposal.targetFunding}</p>
+                              <p className="text-sm font-medium">{proposal.target_funding}</p>
                             </div>
                           </div>
                           <div className="space-y-2">
@@ -348,8 +378,8 @@ export default function BorrowPage() {
                               <span className="text-slate-400">Funding Progress</span>
                               <span>
                                 {(
-                                  (Number.parseFloat(proposal.currentFunding.replace(/[^0-9.-]+/g, "")) /
-                                    Number.parseFloat(proposal.targetFunding.replace(/[^0-9.-]+/g, ""))) *
+                                  (Number.parseFloat(proposal.current_funding.replace(/[^0-9.-]+/g, "")) /
+                                    Number.parseFloat(proposal.target_funding.replace(/[^0-9.-]+/g, ""))) *
                                   100
                                 ).toFixed(1)}
                                 %
@@ -357,17 +387,17 @@ export default function BorrowPage() {
                             </div>
                             <Progress
                               value={
-                                (Number.parseFloat(proposal.currentFunding.replace(/[^0-9.-]+/g, "")) /
-                                  Number.parseFloat(proposal.targetFunding.replace(/[^0-9.-]+/g, ""))) *
+                                (Number.parseFloat(proposal.current_funding.replace(/[^0-9.-]+/g, "")) /
+                                  Number.parseFloat(proposal.target_funding.replace(/[^0-9.-]+/g, ""))) *
                                 100
                               }
                               className="h-1.5 bg-slate-800"
                             />
                             <div className="flex justify-between text-xs text-slate-400">
                               <span>
-                                {proposal.currentFunding} / {proposal.targetFunding}
+                                {proposal.current_funding} / {proposal.target_funding}
                               </span>
-                              <span>{proposal.investorCount} investors</span>
+                              <span>{proposal.investor_count} investors</span>
                             </div>
                           </div>
                         </CardContent>
@@ -418,49 +448,43 @@ export default function BorrowPage() {
                               {proposal.logo ? (
                                 <Image
                                   src={proposal.logo || "/placeholder.svg"}
-                                  alt={proposal.companyName}
+                                  alt={proposal.company_name}
                                   width={48}
                                   height={48}
                                 />
                               ) : (
-                                <div className="text-2xl font-bold">{proposal.companyName.charAt(0)}</div>
+                                <div className="text-2xl font-bold">{proposal.company_name.charAt(0)}</div>
                               )}
                             </div>
                             <div>
-                              <CardTitle className="text-lg gradient-text">{proposal.companyName}</CardTitle>
+                              <CardTitle className="text-lg gradient-text">{proposal.company_name}</CardTitle>
                               <CardDescription className="flex items-center gap-1">
-                                <Wallet className="h-3 w-3" /> Funded with {proposal.acceptedToken}
+                                <Wallet className="h-3 w-3" /> Funded with {proposal.accepted_token}
                               </CardDescription>
                             </div>
                           </div>
                         </CardHeader>
                         <CardContent className="pb-2">
-                          <p className="text-sm text-slate-300 mb-4">{proposal.shortDescription}</p>
-                          <div className="grid grid-cols-3 gap-2 mb-4">
+                          <p className="text-sm text-slate-300 mb-4">{proposal.short_description}</p>
+                          <div className="grid grid-cols-2 gap-2 mb-4">
                             <div className="text-center">
                               <div className="flex items-center justify-center gap-1 text-xs text-slate-400 mb-1">
                                 <TrendingUp className="h-3 w-3" /> Return
                               </div>
-                              <p className="text-sm font-medium gradient-text">{proposal.expectedReturn}</p>
-                            </div>
-                            <div className="text-center">
-                              <div className="flex items-center justify-center gap-1 text-xs text-slate-400 mb-1">
-                                <Calendar className="h-3 w-3" /> Duration
-                              </div>
-                              <p className="text-sm font-medium">{proposal.duration}</p>
+                              <p className="text-sm font-medium gradient-text">{proposal.expected_return}</p>
                             </div>
                             <div className="text-center">
                               <div className="flex items-center justify-center gap-1 text-xs text-slate-400 mb-1">
                                 <Wallet className="h-3 w-3" /> Raised
                               </div>
-                              <p className="text-sm font-medium">{proposal.targetFunding}</p>
+                              <p className="text-sm font-medium">{proposal.target_funding}</p>
                             </div>
                           </div>
                           <div className="space-y-2">
                             <Progress value={100} className="h-1.5 bg-slate-800" />
                             <div className="flex justify-between text-xs text-slate-400">
                               <span>Fully Funded</span>
-                              <span>{proposal.investorCount} investors</span>
+                              <span>{proposal.investor_count} investors</span>
                             </div>
                           </div>
                         </CardContent>
@@ -509,58 +533,52 @@ export default function BorrowPage() {
                               {proposal.logo ? (
                                 <Image
                                   src={proposal.logo || "/placeholder.svg"}
-                                  alt={proposal.companyName}
+                                  alt={proposal.company_name}
                                   width={48}
                                   height={48}
                                 />
                               ) : (
-                                <div className="text-2xl font-bold">{proposal.companyName.charAt(0)}</div>
+                                <div className="text-2xl font-bold">{proposal.company_name.charAt(0)}</div>
                               )}
                             </div>
                             <div>
-                              <CardTitle className="text-lg gradient-text">{proposal.companyName}</CardTitle>
+                              <CardTitle className="text-lg gradient-text">{proposal.company_name}</CardTitle>
                               <CardDescription className="flex items-center gap-1">
-                                <Wallet className="h-3 w-3" /> Requested {proposal.acceptedToken}
+                                <Wallet className="h-3 w-3" /> Requested {proposal.accepted_token}
                               </CardDescription>
                             </div>
                           </div>
                         </CardHeader>
                         <CardContent className="pb-2">
-                          <p className="text-sm text-slate-300 mb-4">{proposal.shortDescription}</p>
-                          <div className="grid grid-cols-3 gap-2 mb-4">
+                          <p className="text-sm text-slate-300 mb-4">{proposal.short_description}</p>
+                          <div className="grid grid-cols-2 gap-2 mb-4">
                             <div className="text-center">
                               <div className="flex items-center justify-center gap-1 text-xs text-slate-400 mb-1">
                                 <TrendingUp className="h-3 w-3" /> Return
                               </div>
-                              <p className="text-sm font-medium gradient-text">{proposal.expectedReturn}</p>
-                            </div>
-                            <div className="text-center">
-                              <div className="flex items-center justify-center gap-1 text-xs text-slate-400 mb-1">
-                                <Calendar className="h-3 w-3" /> Duration
-                              </div>
-                              <p className="text-sm font-medium">{proposal.duration}</p>
+                              <p className="text-sm font-medium gradient-text">{proposal.expected_return}</p>
                             </div>
                             <div className="text-center">
                               <div className="flex items-center justify-center gap-1 text-xs text-slate-400 mb-1">
                                 <Wallet className="h-3 w-3" /> Target
                               </div>
-                              <p className="text-sm font-medium">{proposal.targetFunding}</p>
+                              <p className="text-sm font-medium">{proposal.target_funding}</p>
                             </div>
                           </div>
                           <div className="space-y-2">
                             <Progress
                               value={
-                                (Number.parseFloat(proposal.currentFunding.replace(/[^0-9.-]+/g, "")) /
-                                  Number.parseFloat(proposal.targetFunding.replace(/[^0-9.-]+/g, ""))) *
+                                (Number.parseFloat(proposal.current_funding.replace(/[^0-9.-]+/g, "")) /
+                                  Number.parseFloat(proposal.target_funding.replace(/[^0-9.-]+/g, ""))) *
                                 100
                               }
                               className="h-1.5 bg-slate-800"
                             />
                             <div className="flex justify-between text-xs text-slate-400">
                               <span>
-                                {proposal.currentFunding} / {proposal.targetFunding}
+                                {proposal.current_funding} / {proposal.target_funding}
                               </span>
-                              <span>{proposal.investorCount} investors</span>
+                              <span>{proposal.investor_count} investors</span>
                             </div>
                           </div>
                         </CardContent>

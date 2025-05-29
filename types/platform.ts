@@ -6,13 +6,11 @@ export type AssetType = {
   icon?: string
   price: string
   apr?: string
-  apr?: string
   walletBalance?: string
   available?: string
   collateralFactor?: string
   borrowLimit?: string
   liquidationThreshold?: string
-  borrowEnabled?: boolean
   supplyEnabled?: boolean
 }
 

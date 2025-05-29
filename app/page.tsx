@@ -299,7 +299,9 @@ export default function Home() {
                             </div>
                             <div>
                               <p className="font-medium">{token}</p>
-                              <p className="text-xs text-slate-400">Wallet: 0.00</p>
+                              <p className="text-xs text-slate-400">
+                                Wallet: 0.00 {token === "IDRX" ? "(Borrowable)" : "(Collateral only)"}
+                              </p>
                             </div>
                           </div>
                           <div className="text-right">
@@ -319,12 +321,21 @@ export default function Home() {
                 <Card className="web3-card">
                   <CardHeader>
                     <CardTitle>Assets to Borrow</CardTitle>
-                    <CardDescription>Borrow assets against your supplied collateral</CardDescription>
+                    <CardDescription>Currently only IDRX is available for borrowing</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="text-center py-8">
-                      <p className="text-slate-400">You need to supply assets as collateral before borrowing.</p>
-                      <Button onClick={() => setActiveTab("supply")} className="mt-4 web3-button group">
+                      <div className="flex justify-center mb-4">
+                        <div className="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center">
+                          <span className="text-2xl font-bold">I</span>
+                        </div>
+                      </div>
+                      <h3 className="text-lg font-medium mb-2">IDRX Token</h3>
+                      <p className="text-slate-400 mb-4">The primary borrowable asset on our platform</p>
+                      <p className="text-sm text-slate-400 mb-4">
+                        You need to supply assets as collateral before borrowing IDRX.
+                      </p>
+                      <Button onClick={() => setActiveTab("supply")} className="web3-button group">
                         Supply Collateral{" "}
                         <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                       </Button>

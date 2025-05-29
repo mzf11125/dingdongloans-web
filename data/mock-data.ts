@@ -6,11 +6,9 @@ interface AssetType {
 	name: string;
 	price: string;
 	apr: string;
-	apr: string;
 	walletBalance: string;
 	available: string;
 	collateralFactor: string;
-	borrowEnabled: boolean;
 	supplyEnabled: boolean;
 }
 
@@ -34,11 +32,9 @@ export const pools: PoolType[] = [
 				name: "IDRX Token",
 				price: "$1.00",
 				apr: "8.2%",
-				apr: "10.2%",
 				walletBalance: "1000.00",
 				available: "100,000,000",
 				collateralFactor: "80%",
-				borrowEnabled: true,
 				supplyEnabled: true,
 			},
 			{
@@ -46,11 +42,9 @@ export const pools: PoolType[] = [
 				name: "Lisk",
 				price: "$2.50",
 				apr: "5.7%",
-				apr: "7.7%",
 				walletBalance: "50.00",
 				available: "25,000,000",
 				collateralFactor: "75%",
-				borrowEnabled: true,
 				supplyEnabled: true,
 			},
 			{
@@ -58,11 +52,9 @@ export const pools: PoolType[] = [
 				name: "Bitcoin",
 				price: "$60,000.00",
 				apr: "3.2%",
-				apr: "5.2%",
 				walletBalance: "0.05",
 				available: "1,000",
 				collateralFactor: "70%",
-				borrowEnabled: true,
 				supplyEnabled: true,
 			},
 			{
@@ -70,11 +62,9 @@ export const pools: PoolType[] = [
 				name: "Ethereum",
 				price: "$3,000.00",
 				apr: "4.5%",
-				apr: "6.5%",
 				walletBalance: "1.20",
 				available: "10,000",
 				collateralFactor: "75%",
-				borrowEnabled: true,
 				supplyEnabled: true,
 			},
 		],
@@ -129,11 +119,9 @@ export const pools: PoolType[] = [
 				name: "Lisk",
 				price: "$2.50",
 				apr: "6.5%",
-				apr: "8.5%",
 				walletBalance: "50.00",
 				available: "10,000,000",
 				collateralFactor: "80%",
-				borrowEnabled: true,
 				supplyEnabled: true,
 			},
 			{
@@ -141,11 +129,9 @@ export const pools: PoolType[] = [
 				name: "IDRX Token",
 				price: "$1.00",
 				apr: "9.0%",
-				apr: "11.0%",
 				walletBalance: "1000.00",
 				available: "50,000,000",
 				collateralFactor: "85%",
-				borrowEnabled: true,
 				supplyEnabled: true,
 			},
 			{
@@ -153,11 +139,9 @@ export const pools: PoolType[] = [
 				name: "USD Coin",
 				price: "$1.00",
 				apr: "7.5%",
-				apr: "9.5%",
 				walletBalance: "2000.00",
 				available: "30,000,000",
 				collateralFactor: "90%",
-				borrowEnabled: true,
 				supplyEnabled: true,
 			},
 		],
@@ -194,11 +178,9 @@ export const pools: PoolType[] = [
 				name: "Ethereum",
 				price: "$3,000.00",
 				apr: "5.5%",
-				apr: "7.5%",
 				walletBalance: "1.20",
 				available: "5,000",
 				collateralFactor: "70%",
-				borrowEnabled: true,
 				supplyEnabled: true,
 			},
 			{
@@ -206,11 +188,9 @@ export const pools: PoolType[] = [
 				name: "Bitcoin",
 				price: "$60,000.00",
 				apr: "4.2%",
-				apr: "6.2%",
 				walletBalance: "0.05",
 				available: "500",
 				collateralFactor: "65%",
-				borrowEnabled: true,
 				supplyEnabled: true,
 			},
 			{
@@ -218,11 +198,9 @@ export const pools: PoolType[] = [
 				name: "IDRX Token",
 				price: "$1.00",
 				apr: "12.0%",
-				apr: "15.0%",
 				walletBalance: "1000.00",
 				available: "20,000,000",
 				collateralFactor: "75%",
-				borrowEnabled: true,
 				supplyEnabled: true,
 			},
 			{
@@ -230,11 +208,9 @@ export const pools: PoolType[] = [
 				name: "Dai Stablecoin",
 				price: "$1.00",
 				apr: "10.5%",
-				apr: "13.5%",
 				walletBalance: "1500.00",
 				available: "15,000,000",
 				collateralFactor: "85%",
-				borrowEnabled: true,
 				supplyEnabled: true,
 			},
 		],

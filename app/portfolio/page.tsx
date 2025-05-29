@@ -37,7 +37,7 @@ export default function PortfolioPage() {
           <CardContent>
             <div className="flex items-end gap-2">
               <p className="text-3xl font-bold">$0.00</p>
-              <p className="text-sm text-slate-400 mb-1">USD</p>
+              <p className="text-sm text-slate-400 mb-1">IDRX</p>
             </div>
           </CardContent>
         </Card>
@@ -49,7 +49,7 @@ export default function PortfolioPage() {
           <CardContent>
             <div className="flex items-end gap-2">
               <p className="text-3xl font-bold">$0.00</p>
-              <p className="text-sm text-slate-400 mb-1">USD</p>
+              <p className="text-sm text-slate-400 mb-1">IDRX</p>
             </div>
           </CardContent>
         </Card>
@@ -61,7 +61,7 @@ export default function PortfolioPage() {
           <CardContent>
             <div className="flex items-end gap-2">
               <p className="text-3xl font-bold">$0.00</p>
-              <p className="text-sm text-slate-400 mb-1">USD</p>
+              <p className="text-sm text-slate-400 mb-1">IDRX</p>
             </div>
           </CardContent>
         </Card>
