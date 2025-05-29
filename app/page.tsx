@@ -229,7 +229,7 @@ export default function Home() {
                 <div className="grid md:grid-cols-3 gap-6">
                   <Card className="web3-card floating">
                     <CardHeader>
-                      <CardTitle className="text-lg">Deposit Balance</CardTitle>
+                      <CardTitle className="text-lg">Total Collateral Value</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <p className="text-3xl font-bold gradient-text">$0.00</p>
@@ -239,7 +239,7 @@ export default function Home() {
 
                   <Card className="web3-card floating-delay-1">
                     <CardHeader>
-                      <CardTitle className="text-lg">Borrow Balance</CardTitle>
+                      <CardTitle className="text-lg">Total Debt</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <p className="text-3xl font-bold gradient-text">$0.00</p>

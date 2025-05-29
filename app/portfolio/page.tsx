@@ -32,7 +32,7 @@ export default function PortfolioPage() {
       <div className="grid md:grid-cols-3 gap-6 mb-8">
         <Card className="web3-card">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Net Worth</CardTitle>
+            <CardTitle className="text-lg">Total Collateral Value</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
@@ -44,19 +44,7 @@ export default function PortfolioPage() {
 
         <Card className="web3-card">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Deposit Balance</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-end gap-2">
-              <p className="text-3xl font-bold">$0.00</p>
-              <p className="text-sm text-slate-400 mb-1">IDRX</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="web3-card">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Borrow Balance</CardTitle>
+            <CardTitle className="text-lg">Total Debt</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-end gap-2">
